@@ -7,7 +7,7 @@ class Connect4:
         self.player = 1
         self.grid = [[0 for _ in range(10)] for __ in range(10)]
 
-    def play(self, position: int):
+    def play(self, position: int) -> int:
         if position >= len(self.grid):
             raise IllegalMove
         for i, cell in enumerate(self.grid[position]):
@@ -17,9 +17,18 @@ class Connect4:
         else:
             raise IllegalMove(f"Column {position} is full")
         self.player = 1 if self.player == 2 else 2
+        return self.detect_winner()
 
-    def get_winner(self):
-        pass
+    def detect_winner(self) -> int:
+        for func in (
+            self._detect_line_in_col,
+            self._detect_line_in_col,
+            self._detect_line_in_diagonal_right,
+            self._detect_line_in_diagonal_left,
+        ):
+            if winner := func():
+                return winner
+        return 0
 
     def _detect_line_in_col(self) -> int:
         for col in self.grid:
@@ -93,7 +102,7 @@ class Connect4:
 
     def __str__(self):
         rows = []
-        for row_index in range(len(self.grid[0])-1, -1, -1):
+        for row_index in range(len(self.grid[0]) - 1, -1, -1):
             row = []
             for col_index in range(len(self.grid)):
                 row.append(str(self.grid[col_index][row_index]))
@@ -101,7 +110,7 @@ class Connect4:
         return "\n".join(rows)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     game = Connect4()
     game.play(0)
     game.play(0)

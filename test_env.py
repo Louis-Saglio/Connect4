@@ -141,3 +141,15 @@ class TestConnect4(TestCase):
         game.play(5)
         game.play(5)
         self.assertEqual(game._detect_line_in_diagonal_left(), 1)
+
+    def test_detect_winner(self):
+        game = Connect4()
+        game.play(0)
+        game.play(1)
+        game.play(0)
+        game.play(1)
+        game.play(0)
+        game.play(1)
+        self.assertEqual(game.detect_winner(), 0)
+        game.play(0)
+        self.assertEqual(game.detect_winner(), 1)
