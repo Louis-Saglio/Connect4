@@ -26,13 +26,31 @@ class Connect4:
             count = 1
             previous, *col = col
             for cell in col:
-                if cell == previous:
+                if cell == 0:
+                    break
+                elif cell == previous:
                     count += 1
                     if count == 4:
                         return cell
                 else:
                     previous = cell
                     count = 0
+        return 0
+
+    def _detect_line_in_row(self) -> int:
+        for row_index in range(len(self.grid[0])):
+            count = 0
+            previous = self.grid[0][0]
+            for col_index in range(len(self.grid)):
+                cell = self.grid[col_index][row_index]
+                if cell != previous:
+                    count = 0
+                if cell == 0:
+                    continue
+                count += 1
+                if count == 4:
+                    return cell
+                previous = cell
         return 0
 
     def __str__(self):

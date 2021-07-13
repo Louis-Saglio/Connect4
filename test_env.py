@@ -41,6 +41,35 @@ class TestConnect4(TestCase):
         game.play(0)
         self.assertEqual(game._detect_line_in_col(), 1)
 
+    def test_detect_line_in_col_1(self):
+        game = Connect4()
+        self.assertEqual(game._detect_line_in_col(), 0)
+        game.play(1)
+        game.play(0)
+        game.play(1)
+        game.play(0)
+        game.play(1)
+        game.play(0)
+        game.play(1)
+        self.assertEqual(game._detect_line_in_col(), 1)
+
+    def test_detect_line_in_row(self):
+        game = Connect4()
+        game.play(4)
+        game.play(4)
+        game.play(5)
+        game.play(5)
+        game.play(5)
+        game.play(6)
+        game.play(6)
+        game.play(7)
+        game.play(7)
+        game.play(8)
+        game.play(8)
+        self.assertEqual(game._detect_line_in_row(), 0)
+        game.play(9)
+        self.assertEqual(game._detect_line_in_row(), 2)
+
     # noinspection DuplicatedCode
     def test_str(self):
         game = Connect4()
