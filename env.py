@@ -53,6 +53,44 @@ class Connect4:
                 previous = cell
         return 0
 
+    def _detect_line_in_diagonal_right(self) -> int:
+        for diagonal_index in range(7):
+            count = 1
+            previous = self.grid[diagonal_index][0]
+            for i in range(1, len(self.grid)):
+                if i + diagonal_index >= len(self.grid):
+                    continue
+                cell = self.grid[i + diagonal_index][i]
+                if cell == 0:
+                    count = 0
+                    continue
+                if cell != previous:
+                    count = 0
+                count += 1
+                if count == 4:
+                    return cell
+                previous = cell
+        return 0
+
+    def _detect_line_in_diagonal_left(self) -> int:
+        for diagonal_index in range(3, len(self.grid)):
+            count = 1
+            previous = self.grid[diagonal_index][0]
+            for i in range(len(self.grid)):
+                if diagonal_index - i < 0:
+                    continue
+                cell = self.grid[diagonal_index - i][i]
+                if cell == 0:
+                    count = 0
+                    continue
+                if cell != previous:
+                    count = 0
+                count += 1
+                if count == 4:
+                    return cell
+                previous = cell
+        return 0
+
     def __str__(self):
         rows = []
         for row_index in range(len(self.grid[0])-1, -1, -1):
