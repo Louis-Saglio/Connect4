@@ -22,7 +22,7 @@ class Connect4:
     def detect_winner(self) -> int:
         for func in (
             self._detect_line_in_col,
-            self._detect_line_in_col,
+            self._detect_line_in_row,
             self._detect_line_in_diagonal_right,
             self._detect_line_in_diagonal_left,
         ):
@@ -43,7 +43,7 @@ class Connect4:
                         return cell
                 else:
                     previous = cell
-                    count = 0
+                    count = 1
         return 0
 
     def _detect_line_in_row(self) -> int:
