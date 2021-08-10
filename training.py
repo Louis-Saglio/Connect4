@@ -15,7 +15,7 @@ def play(nn1: NeuralNetwork, nn2: NeuralNetwork):
             try:
                 game.play(move)
             except IllegalMove:
-                print("First choice impossible")
+                pass
             else:
                 break
         else:
@@ -25,7 +25,56 @@ def play(nn1: NeuralNetwork, nn2: NeuralNetwork):
     return winner, game
 
 
+def train() -> NeuralNetwork:
+    population = [NeuralNetwork(100, [20, 10]) for _ in range(10)]
+    for i in range(50):
+        print(f"Generation {i}")
+        scores = []
+        for nn0 in population:
+            score = 0
+            for nn1 in population:
+                if nn0 is nn1:
+                    continue
+                if play(nn0, nn1)[0] == 1:
+                    score += 1
+            scores.append(score)
+        best = population[np.argmax(scores)]
+        population = [best.clone() for _ in range(len(population))]
+        for nn in population:
+            if nn is not best:
+                nn.mutate()
+    return best
+
+
+def play_against_computer():
+    computer = train()
+    game = Connect4()
+    while True:
+        col = int(input("Choose col"))
+        game.play(col)
+        state = np.array(game.grid).flatten()
+        moves = computer.feedforward(state).argsort()
+        for move in moves:
+            try:
+                game.play(move)
+            except IllegalMove:
+                pass
+            else:
+                break
+        else:
+            print("Computer cannot play")
+            break
+        print(game)
+        if player := game.detect_winner():
+            print(f"Winner is {player}")
+            break
+
+
 if __name__ == '__main__':
-    winner, game = play(NeuralNetwork(100, [20, 10]), NeuralNetwork(100, [20, 10]))
-    print(winner)
-    print(game)
+    player0 = NeuralNetwork(100, [20, 10])
+    player1 = train()
+    for i in range(10):
+        winner, game = play(NeuralNetwork(100, [20, 10]), player1)
+        print(game)
+        print(winner)
+
