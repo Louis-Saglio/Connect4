@@ -35,8 +35,7 @@ def train() -> NeuralNetwork:
             for nn1 in population:
                 if nn0 is nn1:
                     continue
-                if play(nn0, nn1)[0] == 1:
-                    score += 1
+                score += int(play(nn1, nn0)[0] == 2)
             scores.append(score)
         best = population[np.argmax(scores)]
         population = [best.clone() for _ in range(len(population))]
